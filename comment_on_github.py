@@ -33,13 +33,13 @@ repo = g.get_repo("K-atc/play-with-gosec")
 # print(head)
 
 ### FIXME: Hard coded
-sha = "0dc89bcc22163cf3372e79dd5c2b185d3c68a9ff"
+sha = "ac94ad47762cc5735c24854d331d4cf9b2a52ad5"
 commit = repo.get_commit(sha)
 if debug: print(commit)
 commit_files = []
 for x in commit.files:
     commit_files.append(x.filename)
-if debug: print(commit_files)
+if debug: print("commit_files = {}".format(commit_files))
 
 ### DANGER: Remove Comments
 for x in commit.get_comments():
@@ -54,6 +54,7 @@ for result_file in GOSEC_RESULT_FILES:
     for i in issues:
         path = i['file'].replace(BASE_DIR, '').strip('/') # transform to relative path
         if not path in commit_files:
+            # if debug: print('[REJECTED] path = {}'.format(path))
             continue
         if debug: print('path = {}'.format(path))
 
