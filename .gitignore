@@ -1,0 +1,10 @@
+bin/**
+pkg/**
+src/github.com
+src/golang.org
+src/gopkg.in
+
+md5
+ssrf
+comment_on_github
+*.json
