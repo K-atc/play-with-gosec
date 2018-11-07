@@ -14,7 +14,7 @@ go get github.com/securego/gosec/cmd/gosec/...
 
 Usage
 ----
-### Try gosec
+### (1) Try gosec
 ```shell
 ./bin/gosec -fmt=json -out gosec-md5.json ./src/md5
 ./bin/gosec -fmt=json -out gosec-ssrf.json ./src/ssrf
@@ -56,13 +56,18 @@ K_atc% cat gosec-md5.json
 }%
 ```
 
-### Reave issue detected by gosec on commit message
+### (2) Reave issue detected by gosec on commit message
+Access token of GitHub should be exported.
+
 ```shell
 ./bin/gosec -fmt=json -out gosec.json src/...
-./comment_on_github.py gosec.json
+GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN ./comment_on_github gosec.json
 ```
 
 see https://github.com/K-atc/play-with-gosec/commit/0dc89bcc22163cf3372e79dd5c2b185d3c68a9ff to check result
+
+### (3) Jenkins
+TODO
 
 
 (Optional) Build sample golang apps
@@ -71,4 +76,21 @@ see https://github.com/K-atc/play-with-gosec/commit/0dc89bcc22163cf3372e79dd5c2b
 export GOPATH=$PWD
 go build md5
 go build ssrf
+```
+
+
+(Optional) Try python version of GitHub commenter
+----
+```shell
+./bin/gosec -fmt=json -out gosec.json src/...
+./comment_on_github.py gosec.json
+```
+
+
+Docker image 'gosec'
+----
+Following command builds docker image 'gosec' for `comment_on_github.py`.
+
+```shell
+./build.sh
 ```

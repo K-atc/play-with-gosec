@@ -1,5 +1,6 @@
 pipeline {
     agent { docker { image 'golang' } }
+    // NOTE: docker image 'gosec' is built by `build.sh`
     // agent { docker { image 'gosec' } }
 
     stages {
@@ -19,10 +20,10 @@ pipeline {
             steps {
                 withEnv(["GOPATH=${env.WORKSPACE}"]) {
                     withCredentials([string(credentialsId: 'GITHUB_ACCESS_TOKEN', variable: 'GITHUB_ACCESS_TOKEN')]) {
-                        sh 'go build src/comment_on_github'
+                        sh 'go build comment_on_github'
                         // NOTE: exit code is 1 when there're issues.
                         sh './bin/gosec -fmt=json -out gosec.json src/... || echo ok'
-                        sh 'GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN ./comment_on_github.py gosec.json'
+                        sh 'GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN ./comment_on_github gosec.json'
                     }
                 }
             }
